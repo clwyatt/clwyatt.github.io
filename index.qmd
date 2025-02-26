@@ -4,6 +4,6 @@ title: "Homepage"
 
 This is the homepage of Chris Wyatt.
 
-## Recent Changes
+## Updates
 
-* moved website from ECE department server (because it was being shutdown)
+* 2025.2.26: moved website from ECE department server (because it was being shutdown)

@@ -3,11 +3,16 @@ project:
   output-dir: docs
   
 website:
-  title: "Homepage of C.L. Wyatt"
+  title: "C.L. Wyatt"
   navbar:
+    logo: images/gravatar.png
     left:
       - href: index.qmd
         text: Home
+      - href: research.qmd
+        text: Research
+      - href: teaching.qmd
+        text: Teaching
       - href: pubs.qmd
         text: Publications
       - href: about.qmd
