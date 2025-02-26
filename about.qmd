@@ -1,5 +1,22 @@
 ---
-title: "About"
+title: "C.L. Wyatt"
+image: images/profile.jpg
+about:
+  template: trestles
+  image-width: 10em
+  image-shape: rounded
 ---
 
-About this site
+I am currently an associate professor in the Bradley Department of Electrical and Computer Engineering at Virginia Tech. I work in application areas such as robotics, AI, and cognitive science, specializing in methods from the intersection of machine learning and dynamical systems theory. I teach courses in linear systems, software, machine learning, and artificial intelligence. Prior to 2014 I did research in biomedical imaging, image analysis, and computer vision.
+
+In more technical terms, I study the dynamics, design, and evolution of stochastic systems at non-equilibrium steady-state and thier application to robotics, artificial intelligence, biology, neuroscience, and cognitive science. 
+
+**Contact Information**
+
+Chris Wyatt<br>
+Associate Professor<br>
+[Electrical and Computer Engineering](http://www.ece.vt.edu) <br>
+[Virginia Tech](http://www.vt.edu) <br>
+Office: 439 in [Whittemore Hall](http://www.vt.edu/about/buildings/whittemore-hall.html) <br>
+![](images/mail.svg) Email: [clwyatt@vt.edu](mailto:clwyatt@vt.edu) <br>
+![](images/github.svg) GitHub: [clwyatt](https://github.com/clwyatt)
