@@ -1,6 +1,7 @@
 ---
 title: "Tutorial on Compilation, Linking, and Dependency Management in C++"
 date: 2023-03-03
+date-modified: 2025-02-27
 author: C.L. Wyatt
 categories:
   - Teaching
@@ -9,7 +10,7 @@ categories:
 
 # Tutorial on Compilation, Linking, and Dependency Management in C++
 
-**Note:** the following is an in-progress draft. I recently ran across [https://fabiensanglard.net/dc/](this article) which does a good job explaining some of this.
+**Note:** the following is an in-progress draft. I recently ran across [https://fabiensanglard.net/dc/](https://fabiensanglard.net/dc/) which does a good job explaining some of this.
 <hr>
 
 Effective use of external (often third-party) libraries in C++ projects can accelerate the development process. These are often called the **dependencies** of the project. Integrating libraries into a project is one of the more confusing/confounding things for students. This essay is an introductory level description of the background, problems, and potential solutions [^1]. It ignores entirely the decision making process on whether to use a third-party library in the first place.
@@ -208,7 +209,7 @@ Ignoring licensing and other concerns, external libraries come in two major kind
 
 Note this distinction is not always clear. Open source libraries may also be distributed in closed form.
 
-** Open Source Libraries**
+#### Open Source Libraries
 
 Adding open source libraries to your project could be as simple as copying them into your source tree and adding them to your build system. 
 This complicates tracking and updating of files from the original project (called the upstream), however this can be handled using version control tools like git sub-modules. 
@@ -217,7 +218,7 @@ A bigger issue is that most libraries themselves have many translation units com
 
 In some cases, for example in libraries composed entirely of templates, the library source consists only of header files. This kind of library is particularly easy to integrate. So much so that many vendors have started providing "header-only" versions of their open source libraries by concatenating the source into a single header, often several thousand lines long. The advantage of this is ease of integration since one need only add this files or set of files to the include path of their build tool. The disadvantage is that it leads to longer build times, larger object files, and virtually unreadable/modifiable source code. A good example of this is the popular Catch test framework for C++.
 
-** Closed Source Libraries**
+#### Closed Source Libraries
 
 Closed source libraries are often used in proprietary code libraries as the source itself is not visible (just the API via the headers). This offers more intellectual-property protection than just a license or non-disclosure agreement that might come with a proprietary open source library.
 
