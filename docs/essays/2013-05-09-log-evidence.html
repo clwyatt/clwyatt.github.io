@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="C.L. Wyatt">
+<meta name="dcterms.date" content="2013-05-09">
 
-<title>C.L. Wyatt - Publications</title>
+<title>C.L. Wyatt - Equivalence between the Log-Evidence, Free Energy, and Divergence</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,8 +69,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -78,10 +109,10 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/gravatar.png" alt="" class="navbar-logo">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/gravatar.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">C.L. Wyatt</span>
     </a>
   </div>
@@ -92,27 +123,27 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./essays/index.html"> 
+    <a class="nav-link" href="../essays/index.html"> 
 <span class="menu-text">Essays</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research.html"> 
+    <a class="nav-link" href="../research.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./teaching.html"> 
+    <a class="nav-link" href="../teaching.html"> 
 <span class="menu-text">Teaching</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./pubs.html" aria-current="page"> 
+    <a class="nav-link" href="../pubs.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -127,34 +158,43 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#older-publications" id="toc-older-publications" class="nav-link active" data-scroll-target="#older-publications">Older Publications</a>
-  <ul class="collapse">
-  <li><a href="#conference-papers" id="toc-conference-papers" class="nav-link" data-scroll-target="#conference-papers">Conference Papers</a></li>
-  <li><a href="#journal-articles" id="toc-journal-articles" class="nav-link" data-scroll-target="#journal-articles">Journal Articles</a></li>
-  <li><a href="#book-chapters" id="toc-book-chapters" class="nav-link" data-scroll-target="#book-chapters">Book Chapters</a></li>
-  <li><a href="#dissertation" id="toc-dissertation" class="nav-link" data-scroll-target="#dissertation">Dissertation</a></li>
-  </ul></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Publications</h1>
-</div>
+<h1 class="title">Equivalence between the Log-Evidence, Free Energy, and Divergence</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Research</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>C.L. Wyatt </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 9, 2013</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">February 27, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -163,113 +203,66 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="http://scholar.google.com/citations?user=6r89o3YAAAAJ">Google Scholar Profile</a></p>
-<section id="older-publications" class="level2">
-<h2 class="anchored" data-anchor-id="older-publications">Older Publications</h2>
-<section id="conference-papers" class="level3">
-<h3 class="anchored" data-anchor-id="conference-papers">Conference Papers</h3>
-<ul>
-<li>
-Xiaoxing Li , Xiaojing Long, Christopher Wyatt and the Alzheimer’s Disease Neuroimaging Initiative, Registration of Images with Topological Change via Riemannian Embedding, ISBI 2011.
-</li>
-<li>
-Micah Chambers, Christopher Wyatt, An Analysis of Blood-Oxygen-Level-Dependent Signal Parameter Estimation using Particle Filters, ISBI 2011.
-</li>
-<li>
-X. Long and C. Wyatt, An Automatic Unsupervised Classification of MR Images in Alzheimer’s Disease, 23rd IEEE Conference on Computer Vision and Pattern Recognition. San Francisco, USA. June 13-18, <em>2010</em>.
-</li>
-<li>
-X. Li and C. Wyatt, Modeling Topological Changes In Deformable Registration, In<em>Proceedings of the 2010 IEEE international conference on Biomedical imaging: from nano to Macro</em> (ISBI’10). IEEE Press, Piscataway, NJ, USA, 360-363.
-</li>
-<li>
-V. Rajagopalan, C. L. Wyatt, Combining Morphometric Evidence from Multiple Registration Methods using Dempster-Shafer Theory, Proc. SPIE 7623, 76231U (2010), DOI:10.1117/12.844002 2010.
-</li>
-<li>
-X. Li and C.L. Wyatt, Brain Segmentation Performance using T1-weighted Images versus T1 Maps Proc. SPIE 7623, 76233R (2010), DOI:10.1117/12.844278.
-</li>
-<li>
-X. Long and C. Wyatt, Structural template formation with discovery of subclasses, Proc. SPIE 7623, 76231B (2010), DOI:10.1117/12.843994.
-</li>
-<li>
-Yuan Shen and Christopher L. Wyatt, Open Implementation of Feature Extraction Methods for Computer Aided Polyp Detection with Principle Component Analysis, MICCAI 2008 Workshop on computational and visualization challenges in virtual colonoscopy.
-</li>
-<li>
-B. Koo, M. Jiang, C.L. Wyatt, G. Wang, “Parameter Optimization for a Grating-Based Phase Contrast X-ray System,” 2008 SPIE International Symposium on Medical Imaging, Proc. of SPIE Vol. 6916 69160C-1.
-</li>
-<li>
-J.W. Suh, C.L. Wyatt, “Registration Of Prone And Supine Colons In The Presence Of Topological Changes,” 2008 SPIE International Symposium on Medical Imaging, Proc. of SPIE Vol. 6916 69160C-1-69160C10.
-</li>
-<li>
-J. W. Suh and C. L. Wyatt, Deformable Registration of Supine and Prone Colons Using Centerline Analysis, Proceedings of IEEE International Symposium on Biomedical Imaging, April 2007.
-</li>
-<li>
-C. L. Wyatt and P. J. Laurienti, Nonrigid Registration of Images with Different Topologies using Embedded Maps, Proceedings of IEEE Engineering in Medicine and Biology Conference, August 2006.
-</li>
-<li>
-J. W. Suh and C. L. Wyatt, Deformable Registration of Prone and Supine Colons for CT Colonography, Proceedings of IEEE Engineering in Medicine and Biology Conference, August 2006.
-</li>
-<li>
-C. L. Wyatt, N. Ari, and R. A. Kraft, Spherical Navigator Registration Using Harmonic Analysis for Prospective Motion Correction, 2005 International Conference on Information Processing in Medical Imaging, <em>Lecture Notes in Computer Science</em> Vol. 3565, pgs. 737-748, July 2005.
-</li>
-<li>
-C.L. Wyatt, Y. Ge, D. J. Vining, Segmentation in Virtual Colonoscopy using a Geometric Deformable Model, <em>Proc. of SPIE Vol. 5369, Physiology and Function from Multidimensional Images</em>, eds.&nbsp;A. Amini, A. Manduca, pgs. 268-279, Feb 2004.
-</li>
-<li>
-C.L. Wyatt and Y. Ge, A Minimum Reliable Scale Selection in 3D Images, <em>IEEE Intl. Symp. on Biomedical Imaging</em>, Arlington VA, April 2004.
-</li>
-</ul>
-</section>
-<section id="journal-articles" class="level3">
-<h3 class="anchored" data-anchor-id="journal-articles">Journal Articles</h3>
-<ul>
-<li>
-S. Zaghlool and C. Wyatt, Missing Data Estimation in FMRI Dynamic Causal Modeling, Frontiers in Neuroscience, vol.&nbsp;8, no. 191, 2014, DOI=10.3389/fnins.2014.00191.
-</li>
-<li>
-X. Li, X. Long, P. Laurienti, and C. Wyatt, Registration of images with varying topology using embedded maps, IEEE transactions on medical imaging, vol.&nbsp;31, no. 3, pp.&nbsp;749-65, Mar.&nbsp;2012.
-</li>
-<li>
-J.W. Suh and C.L.Wyatt, Registration under Topological Change for CT Colonography, IEEE Transactions on Biomedical Engineering, vol.&nbsp;58, No.&nbsp;5, pp.&nbsp;1403-1411, May, 2011.
-</li>
-<li>
-J. W. Suh and C. L. Wyatt, Deformable Registration of Supine and Prone Colons for CT Colonography , Journal of Computer Assisted Tomography: November/December 2009 - Volume 33 - Issue 6 - pp 902-911 doi: 10.1097/RCT.0b013e3181a7e2c1.
-</li>
-<li>
-M. Jiang, C. L. Wyatt, G. Wang, X-Ray Phase-Contrast Imaging with Three 2D Gratings, International Journal of Biomedical Imaging, Volume 2008, Article ID 827152, 8 pages.
-</li>
-<li>
-C. L. Wyatt, Y. Ge, David Vining, Segmentation in Virtual Colonoscopy Using a Geometric Deformable Model, <em>Computerized Medical Imaging and Graphics</em>, 30 (1): 17-30 Jan 2006.
-</li>
-<li>
-C. L. Wyatt, E. Bayram, Y. Ge, Minimum Reliable Scale Selection in 3D, <em>IEEE Trans. On Pattern Analysis and Machine Intelligence</em>, 28 (3): 481-U1 March 2006.
-</li>
-<li>
-E. V. Sullivan, H. J. Sable, W. N Strother, D. P. Friedman, A. Davenport, H. Tillman-Smith, R. A. Kraft, C. L. Wyatt, K. T. Szeliga, N. C. Buchheimer, J. B. Daunais, E. Adalsteinsson, A. Pfefferbaum, K. A Grant, Neuroimaging of Rodent and Primate Models of Alcoholism: Initial Reports from the Integrative Neuroscience Initiative on Alcoholism, <em>Alcoholism: Clinical and Experimental Research</em> Vol. 29 No.&nbsp;2 pgs 287-294 Feb 2005
-</li>
-<li>
-C. L. Wyatt, Y. Ge, D. J. Vining, Automatic Segmentation of the Colon for Virtual Colonoscopy, <em>Computerized Medical Imaging and Graphics</em>, Vol. 24 No.&nbsp;1 pgs. 1-9, Jan-Feb 2000.
-</li>
-</ul>
-</section>
-<section id="book-chapters" class="level3">
-<h3 class="anchored" data-anchor-id="book-chapters">Book Chapters</h3>
-<ul>
-<li>
-M.T. Freedman, M. Loew, Y.P. Wang, C. L. Wyatt, Y. Wang, Chapter 7 Data Processing and Analysis, Biomedical Information Technology, Academic Press 2007.
-</li>
-</ul>
-</section>
-<section id="dissertation" class="level3">
-<h3 class="anchored" data-anchor-id="dissertation">Dissertation</h3>
-<ul>
-<li>
-Christopher Wyatt, “Improving the Conformal Metric: Geodesic Deformable Models for Medical Image Analysis”, <i>Ph.D.&nbsp;Dissertation</i>, Wake Forest University School of Medicine, 2002.
-</li>
-</ul>
+<p>The foundation of Variational Bayes is that the log-evidence can be expressed in terms of the free energy, <span class="math inline">\(F\)</span>, and a divergence term</p>
+<p><span class="math display">\[ \ln p(y \mid m) = F + D(q(\theta) \parallel p(\theta\mid y,m)) \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ F = \left&lt; L(\theta)\right&gt;_q -\left&lt; \ln q \right&gt;_q \]</span></p>
+<p><span class="math display">\[ L = \ln p(y, \theta) \]</span></p>
+<p>Note in the above the notation <span class="math inline">\(\left&lt; \right&gt;_q\)</span> denotes expectation with respect to the variational density <span class="math inline">\(q\)</span> of the function in the brackets.</p>
+<p>This is derived in several places, but most left a few non-obvious gaps (for me). What follows is my derivation in somewhat excruciating detail, both as a personal reference and in the hopes it might help someone else.</p>
+<hr>
+<p>We begin by writing down the evidence, the probability of getting the data <span class="math inline">\(y\)</span> given the model <span class="math inline">\(m\)</span>. I will drop the dependence on the model since it does not affect the derivation; the free energy is implicitly a function of the model used. The evidence can be expressed as the marginal of the joint between the data <span class="math inline">\(y\)</span> and the parameters <span class="math inline">\(\theta\)</span> with respect to <span class="math inline">\(\theta\)</span>.</p>
+<p><span class="math display">\[
+p(y) = \int d\theta \; p(\theta, y)
+\]</span></p>
+<p>Then divide the top and bottom by what will later become the variational density that approximates the posterior and group the <span class="math inline">\(q\)</span> in the denominator with the joint density as the numerator. This can be expressed as an expectation.</p>
+<p><span class="math display">\[
+p(y) = \int d\theta \; q(\theta) \frac{p(\theta, y)}{q(\theta)} = \left&lt; \frac{p(\theta, y)}{q(\theta)}\right&gt;_q
+\]</span></p>
+<p>Then take the log of the evidence and use Jensen’s inequality, which states that for a concave (down like a frown) function, in this case the log, the function of the expectation is greater than or equal to the expectation of the function (the inequality is reversed for concave up functions). Thus,</p>
+<p><span class="math display">\[
+\ln p(y) = \ln \left&lt; \frac{p(\theta, y)}{q(\theta)}\right&gt;_q \geq \left&lt; \ln \frac{p(\theta, y)}{q(\theta)}\right&gt;_q
+\]</span></p>
+<p>Then expand the log of the fraction to get</p>
+<p><span class="math display">\[
+\ln p(y) \geq \int d\theta \; q(\theta) \ln p(\theta, y) - \int d\theta \; q(\theta) \ln q(\theta)
+\]</span></p>
+<p>This implies that the right hand of the inequality, the free energy, is a lower bound on the true log-evidence (left hand side).</p>
+<p>We then re-write the free energy again as the log of the fraction and determine the slack, what has to be added to the free energy to make it equal to the log-evidence:</p>
+<p><span class="math display">\[
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta, y)}{q(\theta)}
+\]</span></p>
+<p>We then expand the joint as the product of the posterior and the evidence</p>
+<p><span class="math display">\[
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)p(y)}{q(\theta)}
+\]</span></p>
+<p>then separate the posterior and evidence terms</p>
+<p><span class="math display">\[
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} - q(\theta) \ln p(y)
+\]</span></p>
+<p>Distributing the integral gives</p>
+<p><span class="math display">\[
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} - \int d\theta \; q(\theta) \ln p(y)
+\]</span></p>
+<p>We then note <span class="math inline">\(p(y)\)</span> has no dependence on <span class="math inline">\(\theta\)</span> and so can be pulled from the integral</p>
+<p><span class="math display">\[
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} -  \ln p(y) \int d\theta \; q(\theta)
+\]</span></p>
+<p>Since <span class="math inline">\(q\)</span> is a density the last integral evaluates to one and the first and last terms of <span class="math inline">\(\ln p(y)\)</span> cancel leaving</p>
+<p><span class="math display">\[
+- \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)}
+\]</span></p>
+<p>Finally if we move the inverse inside the log (flip numerator/denominator) we get</p>
+<p><span class="math display">\[
+\int d\theta \; q(\theta) \ln \frac{q(\theta)}{p(\theta|y)}
+\]</span></p>
+<p>Which is the definition of the K-L divergence between <span class="math inline">\(q\)</span> and the posterior density, a measure of how close <span class="math inline">\(q\)</span> is <span class="math inline">\(p(\theta\mid y)\)</span>.</p>
+<p><span class="math display">\[
+D(q(\theta)||p(\theta|y))
+\]</span></p>
+<p>Reinserting the dependence on the model <span class="math inline">\(m\)</span> gives the desired result.</p>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
