@@ -7,8 +7,6 @@ website:
   navbar:
     logo: images/gravatar.png
     left:
-      - href: index.qmd
-        text: Home
       - href: essays/index.qmd
         text: Essays
       - href: research.qmd
