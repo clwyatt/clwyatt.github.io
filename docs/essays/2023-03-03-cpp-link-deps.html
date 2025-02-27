@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.542">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="C.L. Wyatt">
+<meta name="dcterms.date" content="2023-03-03">
+
+<title>C.L. Wyatt - Tutorial on Compilation, Linking, and Dependency Management in C++</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/gravatar.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">C.L. Wyatt</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../essays/index.html"> 
+<span class="menu-text">Essays</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../pubs.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tutorial-on-compilation-linking-and-dependency-management-in-c" id="toc-tutorial-on-compilation-linking-and-dependency-management-in-c" class="nav-link active" data-scroll-target="#tutorial-on-compilation-linking-and-dependency-management-in-c">Tutorial on Compilation, Linking, and Dependency Management in C++</a>
+  <ul class="collapse">
+  <li><a href="#background-on-compilation-linking-and-running" id="toc-background-on-compilation-linking-and-running" class="nav-link" data-scroll-target="#background-on-compilation-linking-and-running">Background on Compilation, Linking, and Running</a>
+  <ul class="collapse">
+  <li><a href="#compilation-translation-units-object-files-and-linking" id="toc-compilation-translation-units-object-files-and-linking" class="nav-link" data-scroll-target="#compilation-translation-units-object-files-and-linking">Compilation, translation units, object files, and linking</a></li>
+  <li><a href="#loading-and-running-a-program" id="toc-loading-and-running-a-program" class="nav-link" data-scroll-target="#loading-and-running-a-program">Loading and running a program</a></li>
+  <li><a href="#building-code-with-multiple-translation-units" id="toc-building-code-with-multiple-translation-units" class="nav-link" data-scroll-target="#building-code-with-multiple-translation-units">Building code with multiple translation units</a></li>
+  <li><a href="#building-and-using-libraries" id="toc-building-and-using-libraries" class="nav-link" data-scroll-target="#building-and-using-libraries">Building and Using Libraries</a></li>
+  <li><a href="#abi" id="toc-abi" class="nav-link" data-scroll-target="#abi">ABI</a></li>
+  <li><a href="#integrating-external-libraries" id="toc-integrating-external-libraries" class="nav-link" data-scroll-target="#integrating-external-libraries">Integrating External Libraries</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#best-practices-for-library-integration" id="toc-best-practices-for-library-integration" class="nav-link" data-scroll-target="#best-practices-for-library-integration">Best Practices for Library Integration</a>
+  <ul class="collapse">
+  <li><a href="#use-a-build-tool" id="toc-use-a-build-tool" class="nav-link" data-scroll-target="#use-a-build-tool">Use a build tool</a></li>
+  <li><a href="#with-open-source-build-the-world" id="toc-with-open-source-build-the-world" class="nav-link" data-scroll-target="#with-open-source-build-the-world">With Open Source “Build the World”</a></li>
+  <li><a href="#manually-manage-the-integration" id="toc-manually-manage-the-integration" class="nav-link" data-scroll-target="#manually-manage-the-integration">manually manage the integration</a></li>
+  <li><a href="#use-a-package-manager" id="toc-use-a-package-manager" class="nav-link" data-scroll-target="#use-a-package-manager">use a package manager</a></li>
+  </ul></li>
+  <li><a href="#detailed-example" id="toc-detailed-example" class="nav-link" data-scroll-target="#detailed-example">Detailed example</a></li>
+  <li><a href="#footnotes" id="toc-footnotes" class="nav-link" data-scroll-target="#footnotes">Footnotes</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial on Compilation, Linking, and Dependency Management in C++</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Teaching</div>
+    <div class="quarto-category">Hidden Curriculum</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>C.L. Wyatt </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 3, 2023</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">February 27, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tutorial-on-compilation-linking-and-dependency-management-in-c" class="level1">
+<h1>Tutorial on Compilation, Linking, and Dependency Management in C++</h1>
+<strong>Note:</strong> the following is an in-progress draft. I recently ran across <a href="https://fabiensanglard.net/dc/">https://fabiensanglard.net/dc/</a> which does a good job explaining some of this.
+<hr>
+<p>Effective use of external (often third-party) libraries in C++ projects can accelerate the development process. These are often called the <strong>dependencies</strong> of the project. Integrating libraries into a project is one of the more confusing/confounding things for students. This essay is an introductory level description of the background, problems, and potential solutions <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. It ignores entirely the decision making process on whether to use a third-party library in the first place.</p>
+<!--
+This is part of my occasional series on the hidden curriculum: things we expect students to know, but don't actually expose them to.
+-->
+<section id="background-on-compilation-linking-and-running" class="level2">
+<h2 class="anchored" data-anchor-id="background-on-compilation-linking-and-running">Background on Compilation, Linking, and Running</h2>
+<p>What follows is a brief, high-level description of how we go from source code (what is in your editor or IDE) to an executing program. This is broadly referred to as the <em>build process</em>. I ignore many details just to set the stage for talking about libraries.</p>
+<p>C++ can be hosted (run on top of an OS) or non-hosted, so called bare-metal. This distinction is not important for our purpose here so I will assume hosted C++ since that is what you are likely more familiar with and where you are more likely to encounter dependency issues. You likely have experience with non-hosted code from embedded system design and dependency problems can occur there as well (remember DriverLib?), but the solutions are largely the same. I will point out differences as needed.</p>
+<p>To be sure we are speaking the same jargon, here is a glossary of terms:</p>
+<ul>
+<li>header : a file containing C++ declarations only</li>
+<li>implementation file : a file containing C++ definitions (implementations)</li>
+<li>translation unit : the collection of code formed by processing all preprocessor directives in an implementation file or header file</li>
+<li>object file : a file containing the machine code resulting from compilation of a single translation unit</li>
+<li>executable file: a file containing a program that can be loaded and run on a host</li>
+<li>shell: a program that can be used to invoke or run executable files</li>
+</ul>
+<p>Note the distinction between header and implementation files is not required. Headers can include definitions. But is simplifies the presentation and is usually how code in organized in C++.</p>
+<p>Some notation (for reference below):</p>
+<ul>
+<li><code>*.hpp</code> are C++ header files</li>
+<li><code>*.cpp</code> are C++ implementation files</li>
+<li><code>*.bin</code> are object files (storing machine code)</li>
+<li><code>*.exe</code> are executables on a given host</li>
+<li><code>*.archive</code> are static library files</li>
+<li><code>*.shared</code> are shared library files</li>
+<li><code>&gt;</code> is a generic command-line shell prompt</li>
+</ul>
+<p>Note, I am purposefully not using the actual program names or file extensions that vary by OS and compiler. This means you can’t copy-paste this code directly and get it to work. This is on purpose. The goal is to get you to internalize the concepts of what these programs do in an abstract sense.</p>
+<section id="compilation-translation-units-object-files-and-linking" class="level3">
+<h3 class="anchored" data-anchor-id="compilation-translation-units-object-files-and-linking">Compilation, translation units, object files, and linking</h3>
+<p>The raw material of a C++ program is source code, typically stored in a plain text file. For example <code>mycode.cpp</code> might contain:</p>
+<pre><code>int myfunc(int x){
+    return x+1;
+}
+
+int main(){
+    int x = 3;
+    return myfunc(x);
+}</code></pre>
+<p>The compiler is a program running on the host, that takes the source code as input, called a <em>translation unit</em> and produces (roughly speaking) machine code that corresponds to the target hardware architecture, stored in an <em>object file</em>. The host and target architecture do not have to be the same – this is called cross-compiling and is very common when programming embedded systems.</p>
+<p>Let suppose that this machine code is written to an object file called <code>mycode.bin</code>. Let’s use <code>cpp.exe</code> for the compiler executable.</p>
+<pre><code>&gt; cpp.exe mycode.cpp mycode.bin</code></pre>
+<p>produces the object file <code>mycode.bin</code>. If the source code is not valid C++, this step might fail, i.e.&nbsp;a <em>compiler error</em> and not produce the output. We are all familiar with those.</p>
+<p>The file<code>mycode.bin</code> is machine code, but is not (yet) an <em>executable</em>. To create one, I need to use the <em>linker</em> to add code specific to the operating system so it can place the machine code into memory, and start its execution. This is just another program (which may be integrated with your compiler driver), lets call it <code>link.exe</code>. Given our <code>mycode.bin</code> and the previously compiled OS object code, <code>os.bin</code>, we might invoke it like so</p>
+<pre><code>&gt; link.exe mycode.bin os.bin mycode.exe</code></pre>
+<p>Which produces the file <code>mycode.exe</code>.</p>
+<p>At this point we have an executable that we can (almost) run. But it is worth stopping to see how this might fail. Suppose in the source file <code>mycode.cpp</code> I had named the function <code>main</code> <code>start</code> instead (not unreasonable). This would compile just fine. However the linking would fail because the <code>os.bin</code> machine code expects to be able to call a compiled function named <code>main</code>, but there is no such function in our modified source (<code>main</code> does not match <code>start</code>). This is a <em>linker error</em>, specifically an unresolved symbol error. I imagine you have encountered this error many times as well.</p>
+<p>The linker must ensure that all called functions and objects (collectively symbols) are present and are copied to the resulting executable. This is called <em>static linking</em>.</p>
+<p>One complication is that the location of some symbols may be loaded later, when running the program. This is called <em>dynamic linking</em>. The code to be resolved when actually running the program is called a <em>dynamic shared object</em>. When linking this way, the shared object file must be provided, however it is not actually copied into the output executable.</p>
+<p>Note dynamic linking is specific to run-time and so pertains to hosted C++ only or to non-hosted code only when using a boot loader at power-on.</p>
+</section>
+<section id="loading-and-running-a-program" class="level3">
+<h3 class="anchored" data-anchor-id="loading-and-running-a-program">Loading and running a program</h3>
+<p>So, given we have an executable, how do we run/execute the program. We invoke a function in the OS kernel called the <em>loader</em>. The loader performs the dynamic linking, resolving any last-minute missing symbols by either locating them in already loaded memory, or loading them from a file before continuing. If this succeeds then the shell calls a function of the OS kernel to start the executable, resulting in a running <em>process</em>. This is done transparently to the user by the shell program when you just enter the name of the executable at the prompt and press enter.</p>
+<pre><code>&gt; mycode.exe</code></pre>
+<p>On a non-hosted system, this process may be handled by a boot loader, which might or might not support dynamic linking. Without a boot loader the machine code is flashed into a specific location where it starts on power-on. In that case only static linking is used.</p>
+<p>We all know the running process (our code) can fail in many ways, segmentation fault anyone?, but how could the program itself fail to start running?</p>
+<p>One obvious way is the executable came from a different OS or target architecture. For example you cannot directly run an executable from MacOS on Windows. Similarly you can’t run a Windows ARM executable on x64 Windows. If you try, it will fail to start.</p>
+<p>Another way is that the loader could fail to dynamically link all the code in. This is typically because the dynamic shared object has not been previously loaded or is incompatible, and cannot be found on the file-system to be loaded.</p>
+<p>This frustrating set of affairs is sometimes called DLL hell after the filename extension of shared library files on Windows, <code>*.dll</code>. However it occurs on all Operating Systems that support dynamic linking.</p>
+<p>As an aside, how does the kernel know where to find the dynamic library files to load? It typically uses a combination of hard coded file-system paths and an environment variable, for example <code>PATH</code> on Windows and <code>LD_LIBRARY_PATH</code> on Linux.</p>
+</section>
+<section id="building-code-with-multiple-translation-units" class="level3">
+<h3 class="anchored" data-anchor-id="building-code-with-multiple-translation-units">Building code with multiple translation units</h3>
+<p>In the example above there was just one C++ source file and two translation units, one resulting from compiling <code>mycode.cpp</code> (<code>mycode.bin</code>) and one that came from the OS, <code>os.bin</code>.</p>
+<p>It is common to organize C++ code into multiple files. For example, a pair of a header file and an implementation file typically define a <em>module</em> of C++ code, which corresponds to a translation unit. Suppose we reorganize our code from above so that <code>mycode.cpp</code> now contains:</p>
+<pre><code>#include "mymodule.hpp"
+int main(){
+    int x = 3;
+    return myfunc(x);
+}</code></pre>
+<p><code>mymodule.hpp</code> contains:</p>
+<pre><code>int myfunc(int);</code></pre>
+<p>and <code>mymodule.cpp</code> contains:</p>
+<pre><code>int myfunc(int x){
+    return x+1;
+}</code></pre>
+<p>all in the current directory. To build this new code we first compile both translation units:</p>
+<pre><code>&gt; cpp.exe mycode.cpp mycode.bin
+&gt; cpp.exe mymodule.cpp mymodule.bin</code></pre>
+<p>and then link them together with the OS object code:</p>
+<pre><code>&gt; link.exe mycode.bin mymodule.bin os.bin mycode.exe</code></pre>
+<p>to create the final executable. Note, I am ignoring precompiled headers here to keep things simple.</p>
+<p>Why complicate things with multiple translation units? Why not just put all the code into one file?</p>
+<p>One reason is that multiple files allows us to organize code so that related objects and functions (modules) are together and not mixed up with code from different modules. This reduces cognitive overhead in larger projects. We could just <code>#include</code> all these files into one and compile it. If the project were small enough then this might be a viable approach.</p>
+<p>However, another reason is that using multiple translation units allows us to improve build times. If code in only one translation unit changes then only it needs to be compiled and then linking done. For example if we modify <code>mymodule.cpp</code> we can skip recompiling <code>mycode.cpp</code> since its object code will not change. While this is a trivial saving in this example, in larger projects this can have a large effect on build times.</p>
+<p>Keeping build times short and easy is important for a good development workflow. We want to automate this so we don’t have to manually decide which files to recompile. While this could be part of the compiler (Oh how I wish it was), in C++ this is delegated to another program, generically called a <em>build tool</em>. The build tool keeps track of which source files are needed to compile a given object file, and which object files are needed to link a given executable, a relationship called the dependency graph. When run a build tool looks for changes in the source files (e.g.&nbsp;using file-system timestamps or hashes) and uses the dependency graph to decide what to recompile and link to minimize the time required.</p>
+</section>
+<section id="building-and-using-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="building-and-using-libraries">Building and Using Libraries</h3>
+<p>As described above, code in different translation units can be combined to create the final executable using the linker and running process using the OS loader.</p>
+<p>We can also combine object files without creating an executable. This is called a library and come in two flavors depending on when they are intended to be used.</p>
+<ul>
+<li>Static libraries are object files bundled together into one file and are intended to be copied into the executable at link time.</li>
+<li>Dynamic or shared libraries are dynamic shared object files bundled together into one file and are intended to be loaded at run-time by the OS or boot-loader.</li>
+</ul>
+<p>This is done using a tool (sometimes built into the compiler) called an archiver. This tool generally takes flags to tell it whether to generate a static or shared library.</p>
+<p>Although static and shared libraries can be used within a project, a more common use is as a way of sharing code among projects. Libraries very closely tied to the language itself, implementing functionality many programmers might want, are called <em>standard libraries</em>. The C++ standard library is one you should be familiar with. Others offer alternative or extensions to the standard library (e.g.&nbsp;Boost) or provide functionality specific to various problem domains. These are called <em>external libraries</em> or third-party libraries. Examples include graphical interfaces, networking, and numerical programming. Libraries enable developers to solve problems much faster, leveraging abstractions and code already written and tested by others. However they come at a cost as we shall see.</p>
+<p>One question you might have is why is there a distinction between static and dynamic libraries? Would it not be simpler to just statically link everything and simplify the OS loader so that missing shared libraries are not a problem?</p>
+<p>The answer to these questions is that it is possible to do this, and might even be a good idea in a non-hosted setting, or even a hosted one running a dedicated program. Some languages like Go take this route to avoid exactly that issue.</p>
+<p>The benefit of dynamic/shared libraries is hinted at in the second common name for them: shared. A system consisting of many concurrently running processes, possibly each using the same libraries, would have duplicates of the library code loaded. This increases the amount of memory used. Significant memory savings can occur if instead multiple running processes, each using the same library, can share the same (read-only) memory holding that libraries object code.</p>
+<p>This was more of an issue when memory was very limited but still has relevance for system performance, and in any case we are stuck with it in hosted C++.</p>
+</section>
+<section id="abi" class="level3">
+<h3 class="anchored" data-anchor-id="abi">ABI</h3>
+<p>The result of compiled languages is machine/object code. For a given translation unit, object code is specific to:</p>
+<ul>
+<li>the target hardware architecture</li>
+<li>if hosted, the operating system and possibly it’s version</li>
+<li>the compiler used and possibly it’s version and options used</li>
+</ul>
+<p>This is called it’s application binary interface, or <em>ABI</em>. Changing any of the above, with no changes to the original source, leads to a possibly incompatible change in the ABI for a specific translation unit’s machine code, meaning that the linker or loader will fail. This is called <em>breaking</em> the ABI, and is a particular problem with C++ since:</p>
+<ul>
+<li>C++ code targets a large number of hardware architectures</li>
+<li>C++ programs run on many different operating systems</li>
+<li>there are multiple C++ compilers (MSVC, gcc, Clang, Intel, etc) and versions supporting different versions of the language: C++98, C++11, C++17, C++20, etc.</li>
+</ul>
+<p>As of 2023 C++ does not have a standard ABI defined, so each combination of these leads to a different, possibly incompatible, ABI. For example mycode.cpp might compile to machine code:</p>
+<ul>
+<li><code>mycode-x86-msvc-win32.bin</code></li>
+<li><code>mycode-amd64-msvc_-win34.bin</code></li>
+<li><code>mycode-amd64-gcc_11-win34.bin</code></li>
+<li><code>mycode-amd64-gcc_11-linux_5.3.1.bin</code></li>
+<li>and on and on …</li>
+</ul>
+<p>In practice not every combination is incompatible as OS and compiler vendors go to great lengths (sometimes at the cost of improvements) to preserve backward compatibility and not break the ABI. However, libraries often change, adding features and fixing bugs, depending on how these are integrated into your project, it increases the chance of ABI incompatibilities.</p>
+<p>Note interpreted or JIT compiled code suffers much less from these issues as the variations are handled in the run-time itself. This is part of the popularity of languages like Javascript, Python, and Java. It is also less of a problem for single-implementation compilers like Rust since one need only worry about architecture and OS differences.</p>
+</section>
+<section id="integrating-external-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="integrating-external-libraries">Integrating External Libraries</h3>
+<p>The cost associated with external libraries we are concerned with here is that they complicate the build process significantly. The root cause of this depends on how the library is distributed.</p>
+<p>Ignoring licensing and other concerns, external libraries come in two major kinds:</p>
+<ul>
+<li>Open (proprietary or non-proprietary) source: all code, declarations and definitions are available for the library code. Note I am using open source here in the sense of available, not free to share or reuse.</li>
+<li>Closed source: only declarations are available (headers) with an already compiled library file (static or shared) provided for each compatible OS-Compiler-Version (ABI) supported.</li>
+</ul>
+<p>Note this distinction is not always clear. Open source libraries may also be distributed in closed form.</p>
+<section id="open-source-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="open-source-libraries">Open Source Libraries</h4>
+<p>Adding open source libraries to your project could be as simple as copying them into your source tree and adding them to your build system. This complicates tracking and updating of files from the original project (called the upstream), however this can be handled using version control tools like git sub-modules.</p>
+<p>A bigger issue is that most libraries themselves have many translation units compiled from many different files with specific compiler settings. Handling this is the job of the build system as described above. However, C++ does not have a single build system. If library alpha uses build tool B1 and library beta uses build tool B2, how do you get them to work with your build tool (B1, B2, or some other) to orchestrate the overall build? This is the central problem when integrating open source libraries into your project.</p>
+<p>In some cases, for example in libraries composed entirely of templates, the library source consists only of header files. This kind of library is particularly easy to integrate. So much so that many vendors have started providing “header-only” versions of their open source libraries by concatenating the source into a single header, often several thousand lines long. The advantage of this is ease of integration since one need only add this files or set of files to the include path of their build tool. The disadvantage is that it leads to longer build times, larger object files, and virtually unreadable/modifiable source code. A good example of this is the popular Catch test framework for C++.</p>
+</section>
+<section id="closed-source-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="closed-source-libraries">Closed Source Libraries</h4>
+<p>Closed source libraries are often used in proprietary code libraries as the source itself is not visible (just the API via the headers). This offers more intellectual-property protection than just a license or non-disclosure agreement that might come with a proprietary open source library.</p>
+<p>However, another reason, and the reason some open source libraries are also sometimes distributed as closed, is that it removes the build tool compatibility problem. You just add the headers and library files (static and/or dynamic) to your build tool. Unfortunately though the ABI problem raises its head. You have to use a library compiled with a compatible ABI or it will not link with your code or fail to load at run-time. Also you need a way to store the library as a part of your project repository, but as these are (often large) binary files, this is not an ideal solution. It might not be a big deal for single architecture and OS projects using one or two external libraries, but for cross-platform development and projects using many external libraries it quickly becomes a pain.</p>
+<p><strong>Diamond Problem</strong></p>
+<p>If the above were not bad enough, a further complication is that libraries themselves often depend on other libraries, and sometimes the same library. The relationship of libraries to one another is called the dependency graph. For example your project needs library A and library B, both of which need library C, but A needs version 1.2.3 of C and B needs version 2.1.0 of C. This is called the “diamond problem” since the dependency graph forms a diamond shape but both version 1.2.3 and version 2.1.0 cannot be in the same executable (you would have multiple definitions).</p>
+<p>Note this is just the simplest case, dependency graphs can get complicated with many conflicts like the diamond problem.</p>
+</section>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>The set of libraries your project needs to build is called its <em>dependencies</em>.</p>
+<p>Now we come to the central point of this essay, namely how do we manage all this?</p>
+<p>Problems Building Code</p>
+<ol type="1">
+<li><p>Complexity within project</p></li>
+<li><p>Build time</p></li>
+</ol>
+<p>How long does it take to build? Why this matters.</p>
+<ol start="3" type="1">
+<li><p>Cross-platform</p></li>
+<li><p>Integrating open source libraries</p></li>
+<li><p>Integrating closed source libraries</p></li>
+</ol>
+<p>ABI compatibility</p>
+</section>
+</section>
+<section id="best-practices-for-library-integration" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices-for-library-integration">Best Practices for Library Integration</h2>
+<section id="use-a-build-tool" class="level3">
+<h3 class="anchored" data-anchor-id="use-a-build-tool">Use a build tool</h3>
+<p>make, nmake, MSBuild, CMake, premake, Buck, Bazel, ….</p>
+<p>This solves Problems 1,2 and to some extent 3</p>
+<p>3 is a problem if your project is cross-platform but your build tool is not.</p>
+<p>4 is a problem if the library uses a different build tool than the one you are using. If you have two libraries each using a different one then you can’t just switch to one or the other</p>
+<p>5 is suffers from the ABI problem</p>
+</section>
+<section id="with-open-source-build-the-world" class="level3">
+<h3 class="anchored" data-anchor-id="with-open-source-build-the-world">With Open Source “Build the World”</h3>
+<p>Use the build tool of choice and integrate the source directly by adding it to your build system, and not using the libraries preferred one</p>
+</section>
+<section id="manually-manage-the-integration" class="level3">
+<h3 class="anchored" data-anchor-id="manually-manage-the-integration">manually manage the integration</h3>
+</section>
+<section id="use-a-package-manager" class="level3">
+<h3 class="anchored" data-anchor-id="use-a-package-manager">use a package manager</h3>
+<p>vcpkg, Conan</p>
+</section>
+</section>
+<section id="detailed-example" class="level2">
+<h2 class="anchored" data-anchor-id="detailed-example">Detailed example</h2>
+<p>Use a specific project, OS set, and compiler set to illustrate the above.</p>
+</section>
+<section id="footnotes" class="level2">
+<h2 class="anchored" data-anchor-id="footnotes">Footnotes</h2>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>This is not specific to C++, C has the same issues, as do all compiled languages to some extent.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
