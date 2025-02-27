@@ -9,6 +9,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: essays/index.qmd
+        text: Essays
       - href: research.qmd
         text: Research
       - href: teaching.qmd
@@ -20,7 +22,7 @@ website:
 	
 format:
   html:
-    theme: cosmo
+    theme: simplex
     css: styles.css
     toc: true
 

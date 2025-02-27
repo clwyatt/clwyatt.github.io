@@ -1,0 +1,6 @@
+---
+title: "Essays"
+listing:
+  # (additional metadata excluded for brevity)
+  categories: true
+---

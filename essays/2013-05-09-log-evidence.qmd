@@ -1,0 +1,100 @@
+---
+title: "Equivalence between the Log-Evidence, Free Energy, and Divergence"
+date: 2013-05-09 13:37
+date-modified: 2025-02-27
+author: C.L. Wyatt
+categories: Research
+---
+
+The foundation of Variational Bayes is that the log-evidence can be expressed
+in terms of the free energy, $F$, and a divergence term
+
+$$ \ln p(y \mid m) = F + D(q(\theta) \parallel p(\theta\mid y,m)) $$
+
+where
+
+$$ F = \left< L(\theta)\right>_q -\left< \ln q \right>_q $$
+
+$$ L = \ln p(y, \theta) $$
+
+Note in the above the notation $\left< \right>_q$ denotes expectation with respect to the variational density $q$ of the function in the brackets.
+
+This is derived in several places, but most left a few non-obvious gaps (for me). What follows is my derivation in somewhat excruciating detail, both as a personal reference and in the hopes it might help someone else.
+
+---
+
+We begin by writing down the evidence, the probability of getting the data $y$ given the model $m$. I will drop the dependence on the model since it does not affect the derivation; the free energy is implicitly a function of the model used. The evidence can be expressed as the marginal of the joint between the data $y$ and the parameters $\theta$ with respect to $\theta$.
+
+$$
+p(y) = \int d\theta \; p(\theta, y)
+$$
+
+Then divide the top and bottom by what will later become the variational density that approximates the posterior and group the $q$ in the denominator with the joint density as the numerator. This can be expressed as an expectation.
+
+$$
+p(y) = \int d\theta \; q(\theta) \frac{p(\theta, y)}{q(\theta)} = \left< \frac{p(\theta, y)}{q(\theta)}\right>_q
+$$
+
+Then take the log of the evidence and use Jensen's inequality, which states that for a concave (down like a frown) function, in this case the log, the function of the expectation is greater than or equal to the expectation of the function (the inequality is reversed for concave up functions). Thus,
+
+$$
+\ln p(y) = \ln \left< \frac{p(\theta, y)}{q(\theta)}\right>_q \geq \left< \ln \frac{p(\theta, y)}{q(\theta)}\right>_q
+$$
+
+Then expand the log of the fraction to get
+
+$$
+\ln p(y) \geq \int d\theta \; q(\theta) \ln p(\theta, y) - \int d\theta \; q(\theta) \ln q(\theta)
+$$
+
+This implies that the right hand of the inequality, the free energy, is a lower bound on the true log-evidence (left hand side).
+
+We then re-write the free energy again as the log of the fraction and determine the slack, what has to be added to the free energy to make it equal to the log-evidence:
+
+$$
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta, y)}{q(\theta)}
+$$
+
+We then expand the joint as the product of the posterior and the evidence
+
+$$
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)p(y)}{q(\theta)}
+$$
+
+then separate the posterior and evidence terms
+
+$$
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} - q(\theta) \ln p(y)
+$$
+
+Distributing the integral gives
+
+$$
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} - \int d\theta \; q(\theta) \ln p(y)
+$$
+
+We then note $p(y)$ has no dependence on $\theta$ and so can be pulled from the integral
+
+$$
+\ln p(y) - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)} -  \ln p(y) \int d\theta \; q(\theta)
+$$
+
+Since $q$ is a density the last integral evaluates to one and the first and last terms of $\ln p(y)$ cancel leaving
+
+$$
+ - \int d\theta \; q(\theta) \ln \frac{p(\theta|y)}{q(\theta)}
+$$
+
+Finally if we move the inverse inside the log (flip numerator/denominator) we get
+
+$$
+ \int d\theta \; q(\theta) \ln \frac{q(\theta)}{p(\theta|y)}
+$$
+
+Which is the definition of the K-L divergence between $q$ and the posterior density, a measure of how close $q$ is $p(\theta\mid y)$.
+
+$$
+ D(q(\theta)||p(\theta|y))
+$$
+
+Reinserting the dependence on the model $m$ gives the desired result.
