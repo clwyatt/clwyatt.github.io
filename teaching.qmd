@@ -2,8 +2,9 @@
 title: "Teaching"
 ---
 
+## Resources
 
-Supplementary Notes for ECE 2714: Signals and Systems: [[GitHub Repository](https://github.com/clwyatt/notes-2714)] [[current pdf](pdfs/notes-2714.pdf)]
+* Supplementary Notes for ECE 2714: Signals and Systems: [[GitHub Repository](https://github.com/clwyatt/notes-2714)] [[website](https://clwyatt.github.io/notes-2714/)]
 
 
 ## Selected Previous Courses
